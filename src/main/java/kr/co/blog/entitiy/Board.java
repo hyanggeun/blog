@@ -1,6 +1,4 @@
 package kr.co.blog.entitiy;
-
-import jdk.vm.ci.meta.Local;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
