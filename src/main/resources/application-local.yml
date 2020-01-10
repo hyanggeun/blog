@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    url: "jdbc:mysql://localhost:3306/blog?characterEncoding=UTF-8&serverTimezone=UTC"
+    username: "root"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: "gidrms1"
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update
+    show_sql: true
+    generate-ddl: true
+file:
+  upload-dir: /home/ubuntu/file
+

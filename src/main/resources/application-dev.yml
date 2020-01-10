@@ -1,0 +1,21 @@
+spring:
+  profiles: dev
+  datasource:
+    url: "jdbc:mysql://localhost:3306/MY_DB?characterEncoding=UTF-8&serverTimezone=UTC"
+    username: "root"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: "!gidrms1"
+    jpa:
+      properties:
+        hibernate:
+          ddl-auto: update
+      show_sql: true
+      generate-ddl: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 215MB
+file:
+  upload-dir: /Users/mac/Desktop/fileDB
+
