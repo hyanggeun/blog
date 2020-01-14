@@ -78,6 +78,12 @@ public class BoardRepositoryTest {
         assertThat(ret.get(1).getUser().getName(),is(name2));
     }
 
+    @Test
+    public void 테스트용(){
+        String s=  "Hello";
+        assertThat(s,is("Hello"));
+
+    }
 
 }
 
