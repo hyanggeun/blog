@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(properties = "spring.profiles.active=dev")
+@SpringBootTest(properties = "spring.profiles.active=local")
 public class CommentServiceTest {
 
 
