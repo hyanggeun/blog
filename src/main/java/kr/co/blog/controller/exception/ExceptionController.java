@@ -49,8 +49,15 @@ public class ExceptionController{
     }
 
     @ExceptionHandler(value = BoardNotExistException.class)
-    public ResponseEntity<Map<String,Object>> UserExistException(BoardNotExistException e){
+    public ResponseEntity<Map<String,Object>> BoardNotExistException(BoardNotExistException e){
         Map<String, Object> m = new HashMap<>();
+        m.put("code",HttpStatus.BAD_REQUEST.value());
+        m.put("msg",e.getMessage());
+        return ResponseEntity.badRequest().body(m);
+    }
+    @ExceptionHandler(value = NoCommentException.class)
+    public ResponseEntity<Map<String, Object>> NoCommentException(NoCommentException e){
+        Map<String,Object> m = new HashMap<>();
         m.put("code",HttpStatus.BAD_REQUEST.value());
         m.put("msg",e.getMessage());
         return ResponseEntity.badRequest().body(m);

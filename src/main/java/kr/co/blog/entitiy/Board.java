@@ -5,14 +5,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "user")
-@Builder
+@ToString(exclude = {"user","comments"})
+@Table(name="BOARD_TBL")
 public class Board {
 
     @Id
@@ -39,5 +41,11 @@ public class Board {
     @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "board")
+    private List<Comment> comments = new ArrayList<>();
+
+    @Column(name="DELETED")
+    private boolean deleted;
 
 }

@@ -9,7 +9,6 @@ import kr.co.blog.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 
 @Service
@@ -36,8 +35,14 @@ public class LoginService {
         if(chk){
             throw new UserExistException("이미 회원가입이 되었습니다");
         }
-        User user = userRepository.save(User.builder().name(name).password(passwordEncoder.encode(password)).phone(phone).email(email).roles(Collections.singletonList("ROLE_USER")).build());
-        return user;
+
+        User user = new User();
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setRoles(Collections.singletonList("ROLE_USER"));
+        return userRepository.save(user);
     }
 
     public void emailCheck(User req) {
@@ -45,6 +50,5 @@ public class LoginService {
         if(chk){
             throw new UserExistException("이미 회원가입이 되었습니다");
         }
-        return;
     }
 }

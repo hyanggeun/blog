@@ -23,9 +23,8 @@ public class BoardController {
         this.boardService = boardService;
     }
     @GetMapping(value ="")
-    public ResponseEntity<?> boardList(@AuthenticationPrincipal UserDetails userDetails){
-
-        List<BoardListResponse> b = boardService.boardList(userDetails);
+    public ResponseEntity<?> boardList(){
+        List<BoardListResponse> b = boardService.boardList();
         return ResponseEntity.ok(b);
     }
 
@@ -35,15 +34,17 @@ public class BoardController {
         Board b = boardService.create(board);
         return ResponseEntity.ok().body(b);
     }
+
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> boardUpdate(@PathVariable Long id,@RequestBody Board board){
+    public ResponseEntity<?> boardUpdate( @PathVariable Long id,@RequestBody Board board){
         Board  b = boardService.update(id, board);
         return ResponseEntity.ok("ok");
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> boardDelete(@PathVariable Long id){
-        boardService.delete(id);
-        return ResponseEntity.ok("deleted");
+        String msg = boardService.delete(id);
+        return ResponseEntity.ok(msg);
     }
 }

@@ -1,6 +1,7 @@
 package kr.co.blog.repository;
 
 import kr.co.blog.entitiy.Board;
+import kr.co.blog.entitiy.Comment;
 import kr.co.blog.entitiy.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,6 +28,10 @@ public class BoardRepositoryTest {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
 
     private final String name = "SONG";
     private final String password = "1234";
@@ -47,15 +53,49 @@ public class BoardRepositoryTest {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        User user =  userRepository.save(User.builder().name(name).password(passwordEncoder.encode(password)).phone(phone).email(email).roles(Collections.singletonList("ROLE_USER")).build());
-        User user2 =  userRepository.save(User.builder().name(name2).password(passwordEncoder.encode(password2)).phone(phone2).email(email2).roles(Collections.singletonList("ROLE_USER")).build());
+        User user = new User();
+        user.setName(name);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setRoles(Collections.singletonList("ROLE_USER"));
 
-        boardRepository.save(Board.builder().name(board_name).content(board_cotent).user(user).build());
-        boardRepository.save(Board.builder().name(board_name2).content(board_cotent2).user(user2).build());
+        userRepository.save(user);
 
-//        System.out.println(user.toString());
+        Board b = new Board();
+        b.setName(board_name);
+        b.setContent(board_cotent);
+        b.setUser(user);
+
+        boardRepository.save(b);
+
+        Comment c = new Comment();
+        c.setComment("Hello");
+        c.AddBoard(b);
+        c.AddUser(user);
+        commentRepository.save(c);
+
+        Comment c2 = new Comment();
+        c2.setComment("Hello2");
+        c2.AddBoard(b);
+        c2.AddUser(user);
+        commentRepository.save(c2);
+
+
     }
 
+    @Test
+    public void comment_Test(){
+        List<Comment> commentList = commentRepository.findAll();
+        commentList.forEach(i-> System.out.println(i.getBoard().getName()));
+    }
+
+    @Test
+    public void 댓글_board_조회_test(){
+        Board board = boardRepository.findAll().get(0);
+        List<Comment> comments = board.getComments();
+        comments.forEach(c-> System.out.println(c.getComment()+ c.getUser().getName()));
+    }
 
     @Test
     public void user_생성_test(){
@@ -66,7 +106,7 @@ public class BoardRepositoryTest {
     @Test
     public void board_조회_테스트(){
         User ret_user = userRepository.findByEmail(email).get();
-        List<Board> ret = boardRepository.findAllByUser(ret_user);
+        List<Board> ret = boardRepository.findAllByUserAndAndDeletedIsFalse(ret_user);
 //        ret.stream().map(b -> b.toString()).forEach(System.out::println);
     }
 
@@ -75,15 +115,8 @@ public class BoardRepositoryTest {
         List<Board> ret = boardRepository.findAll();
         ret.stream().map(b->b.toString()).forEach(System.out::println);
         assertThat(ret.get(0).getUser().getName(),is(name));
-        assertThat(ret.get(1).getUser().getName(),is(name2));
     }
 
-    @Test
-    public void 테스트용(){
-        String s=  "Hello";
-        assertThat(s,is("Hello"));
-
-    }
 
 }
 

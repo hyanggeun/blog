@@ -10,7 +10,6 @@ import kr.co.blog.exception.BoardNotExistException;
 import kr.co.blog.repository.BoardRepository;
 import lombok.extern.java.Log;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,9 +25,7 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public List<BoardListResponse> boardList(UserDetails userDetails) {
-        User s = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("msg:     "+s);
+    public List<BoardListResponse> boardList() {
         List<BoardListResponse> ret = boardRepository.findAllDesc();
         if (ret.isEmpty()) {
             throw new BoardExistFailedException("게시물이 없습니다.");
@@ -44,10 +41,10 @@ public class BoardService {
         return boardRepository.save(b);
     }
 
-    public void delete(Long id) {
+    public String delete(Long id) {
         Board b = boardRepository.findById(id).orElseThrow(()-> new BoardNotExistException("삭제할 글이 없습니다."));
-        boardRepository.delete(b);
-
+        b.setDeleted(true);
+        return "Deleted OK";
     }
 
     public Board create(Board board) {

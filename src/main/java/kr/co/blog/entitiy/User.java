@@ -18,20 +18,21 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-@Table(name = "user_tbl")
+@Table(name = "USER_TBL")
 @Entity
-@Builder
-@ToString(exclude = "board")
+@ToString(exclude = {"board","comments"})
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
     private Long id;
 
-    @Column(name="Email")
+    @Column(name="EMAIL")
     private String email;
 
     @Column(name="PASSWORD")
+    @JsonIgnore
     private String password;
 
     @Column(name="PHONE")
@@ -40,23 +41,26 @@ public class User implements UserDetails {
     @Column(name ="NAME")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Board> board = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Comment> comments = new ArrayList<>();
+
+
+
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
 
     //JSON 값에 포함 시키지 않을 데이터에 붙인다.
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+       return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
@@ -64,6 +68,7 @@ public class User implements UserDetails {
     public String getPassword(){
         return this.password;
     }
+
     @Override
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getUsername() {
