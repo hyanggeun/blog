@@ -32,7 +32,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(value = "local")
+@ActiveProfiles(value = "dev")
 public class CommentServiceTest {
 
 

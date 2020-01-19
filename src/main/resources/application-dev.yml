@@ -6,12 +6,17 @@ spring:
     url: "jdbc:h2:tcp://localhost/~/test"
     username: sa
     password: ""
+#    url: "jdbc:mysql://localhost:3306/MY_DB?characterEncoding=UTF-8&serverTimezone=UTC"
+#    username: "root"
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    password: "!gidrms1"
   jpa:
     properties:
       hibernate:
         format-sql: true
         ddl-auto: update
         dialect: org.hibernate.dialect.H2Dialect
+#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     show_sql: true
     generate-ddl: true
   servlet:

@@ -6,10 +6,18 @@ spring:
     username: "root"
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: "gidrms1"
+#  jpa:
+#    properties:
+#      hibernate:
+#        ddl-auto: update
+#    show_sql: true
+#    generate-ddl: true
   jpa:
     properties:
       hibernate:
+        format-sql: true
         ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     show_sql: true
     generate-ddl: true
 file:
